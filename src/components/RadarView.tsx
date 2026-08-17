@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { PanelsResponse, PanelStatus } from '../types';
+import Sparkline from './Sparkline';
 
 // Cada panel tiene forma de dato distinta, así que en vez de un componente por
 // panel, un formateador chico por id: toma un item y devuelve 1-2 líneas de texto.
@@ -80,6 +81,33 @@ function PanelCard({ status, result }: { status: PanelStatus; result?: import('.
   }
 
   const items = (result.items || []) as any[];
+
+  if (status.id === 'crypto') {
+    return (
+      <div className="panel-card">
+        <h3>{status.label}</h3>
+        {items.length === 0 ? (
+          <p className="panel-muted">Sin datos por ahora.</p>
+        ) : (
+          <ul className="panel-list">
+            {items.map((c) => (
+              <li key={c.id} className="crypto-row">
+                <span>
+                  <span className="panel-primary">{c.symbol} · ${Number(c.price).toLocaleString()}</span>
+                  <span className="panel-secondary">
+                    {c.change24h > 0 ? '+' : ''}
+                    {c.change24h?.toFixed(2)}% 24h
+                  </span>
+                </span>
+                <Sparkline data={c.sparkline7d} positive={c.change24h >= 0} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
+
   const format = FORMATTERS[status.id] || ((i: any) => ({ primary: JSON.stringify(i).slice(0, 80) }));
 
   return (

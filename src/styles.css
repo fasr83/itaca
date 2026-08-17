@@ -332,3 +332,74 @@ header h1 {
   color: var(--muted);
   margin-top: 2px;
 }
+
+.crypto-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.crypto-row .panel-primary,
+.crypto-row .panel-secondary {
+  display: block;
+}
+
+.tv-section {
+  margin-bottom: 28px;
+}
+
+.tv-section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+
+.tv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.tv-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tv-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  display: block;
+}
+
+.tv-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tv-play {
+  font-size: 28px;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+.tv-thumb:hover .tv-play {
+  opacity: 1;
+}
+
+.tv-name {
+  margin: 0;
+  padding: 8px 10px;
+  font-size: 13px;
+}

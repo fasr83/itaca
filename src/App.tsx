@@ -5,6 +5,7 @@ import BriefPanel from './components/BriefPanel';
 import { useVisited } from './useVisited';
 import { useTranslations } from './useTranslations';
 import RadarView from './components/RadarView';
+import LiveTV from './components/LiveTV';
 
 function timeAgoShort(date: Date | null): string {
   if (!date) return '';
@@ -15,7 +16,7 @@ function timeAgoShort(date: Date | null): string {
 }
 
 export default function App() {
-  const [view, setView] = useState<'news' | 'radar'>('news');
+  const [view, setView] = useState<'news' | 'radar' | 'tv'>('news');
   const [topics, setTopics] = useState<TopicInfo[]>([]);
   const [activeTopic, setActiveTopic] = useState<string>('');
   const [items, setItems] = useState<NewsItem[]>([]);
@@ -95,6 +96,9 @@ export default function App() {
           <button className={view === 'radar' ? 'active' : ''} onClick={() => setView('radar')}>
             Radar
           </button>
+          <button className={view === 'tv' ? 'active' : ''} onClick={() => setView('tv')}>
+            TV
+          </button>
         </nav>
 
         {view === 'news' && (
@@ -125,6 +129,8 @@ export default function App() {
 
       {view === 'radar' ? (
         <RadarView />
+      ) : view === 'tv' ? (
+        <LiveTV />
       ) : (
         <>
           <BriefPanel items={filteredItems} />
