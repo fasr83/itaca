@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import Parser from 'rss-parser';
 import { TOPICS } from './sources.js';
 import { cacheGet, cacheSet } from './cache.js';
@@ -154,6 +156,17 @@ app.get('/api/flight-search', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// En producción (Docker), un solo proceso sirve la API y el frontend ya
+// compilado (npm run build → dist/) — no hace falta Vite dev server aparte.
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const distPath = path.join(__dirname, '..', 'dist');
+  app.use(express.static(distPath));
+  app.get(/^(?!\/api).*/, (_req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
 
 const PORT = process.env.API_PORT || 8787;
 app.listen(PORT, () => {
