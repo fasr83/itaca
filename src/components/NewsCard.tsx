@@ -10,11 +10,32 @@ function timeAgo(iso: string | null): string {
   return `hace ${Math.floor(hours / 24)}d`;
 }
 
-export default function NewsCard({ item }: { item: NewsItem }) {
+const TIER_LABEL: Record<number, string> = {
+  1: 'Fuente tier 1 · agencia u oficial',
+  2: 'Fuente tier 2 · medio mayor reconocido',
+};
+
+export default function NewsCard({
+  item,
+  visited,
+  onOpen,
+}: {
+  item: NewsItem;
+  visited: boolean;
+  onOpen: () => void;
+}) {
   return (
-    <a className="news-card" href={item.link} target="_blank" rel="noreferrer">
+    <a
+      className={`news-card${visited ? ' visited' : ''}`}
+      href={item.link}
+      target="_blank"
+      rel="noreferrer"
+      onClick={onOpen}
+    >
       <div className="news-card-meta">
-        <span className={`tier-badge tier-${item.tier}`}>{item.source}</span>
+        <span className={`tier-badge tier-${item.tier}`} title={TIER_LABEL[item.tier]}>
+          {item.source}
+        </span>
         <span className="news-time">{timeAgo(item.isoDate)}</span>
       </div>
       <div className="news-title">{item.title}</div>

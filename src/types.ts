@@ -5,6 +5,26 @@ export interface NewsItem {
   source: string;
   tier: number;
   topic: string;
+  lang: string;
+}
+
+export interface PanelStatus {
+  id: string;
+  label: string;
+  configured: boolean;
+  needsKey: string | null;
+  setupUrl: string | null;
+}
+
+export interface PanelResult {
+  items?: unknown[];
+  error?: string;
+  [key: string]: unknown;
+}
+
+export interface PanelsResponse {
+  status: PanelStatus[];
+  data: Record<string, PanelResult>;
 }
 
 export interface TopicInfo {

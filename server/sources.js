@@ -11,7 +11,7 @@ export const TOPICS = {
       { name: 'The Guardian World', tier: 2, url: 'https://www.theguardian.com/world/rss' },
       { name: 'NPR News', tier: 2, url: 'https://feeds.npr.org/1004/rss.xml' },
       { name: 'DW News', tier: 2, url: 'https://rss.dw.com/rdf/rss-en-all' },
-      { name: 'BBC Mundo', tier: 1, url: 'https://feeds.bbci.co.uk/mundo/rss.xml' },
+      { name: 'BBC Mundo', tier: 1, url: 'https://feeds.bbci.co.uk/mundo/rss.xml', lang: 'es' },
     ],
   },
   tecnologia: {
