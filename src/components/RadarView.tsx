@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { PanelsResponse, PanelStatus } from '../types';
 import Sparkline from './Sparkline';
+import FlightSearch from './FlightSearch';
 
 // Cada panel tiene forma de dato distinta, así que en vez de un componente por
 // panel, un formateador chico por id: toma un item y devuelve 1-2 líneas de texto.
@@ -194,6 +195,7 @@ export default function RadarView() {
       <button className="refresh radar-refresh" onClick={load} disabled={loading}>
         {loading ? '⟳ Actualizando...' : '⟳ Actualizar radar'}
       </button>
+      <FlightSearch />
       <div className="panels-grid">
         {data?.status.map((s) => (
           <PanelCard key={s.id} status={s} result={data.data[s.id]} />

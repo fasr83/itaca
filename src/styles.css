@@ -561,3 +561,115 @@ header h1 {
   background: var(--panel);
   color: var(--text);
 }
+
+.flight-search {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.flight-search-bar {
+  display: flex;
+  gap: 8px;
+}
+
+.flight-search-bar input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.flight-search-bar button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.flight-search-bar button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.flight-result {
+  margin-top: 16px;
+}
+
+.flight-result h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.flight-progress {
+  margin-bottom: 16px;
+}
+
+.flight-progress-endpoints {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.flight-progress-track {
+  position: relative;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.flight-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+}
+
+.flight-progress-plane {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+}
+
+.flight-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.flight-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.flight-stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.flight-stat-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.flight-route-names {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 8px 0 0;
+}

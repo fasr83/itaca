@@ -4,6 +4,7 @@ import { TOPICS } from './sources.js';
 import { cacheGet, cacheSet } from './cache.js';
 import { generateBrief, translateBatch } from './ai.js';
 import { PANELS, panelStatus } from './panels/registry.js';
+import { searchFlight } from './flightSearch.js';
 
 const app = express();
 app.use(express.json());
@@ -139,6 +140,19 @@ app.get('/api/panels', async (_req, res) => {
   );
 
   res.json({ status, data });
+});
+
+// Búsqueda de un vuelo puntual por número/callsign — posición en vivo (OpenSky)
+// + ruta conocida (OpenSky routes, comunitaria) + distancias (haversine contra
+// coordenadas de aeropuertos, dataset abierto de mwgg/Airports).
+app.get('/api/flight-search', async (req, res) => {
+  const callsign = String(req.query.callsign || '');
+  try {
+    const result = await searchFlight(callsign);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 const PORT = process.env.API_PORT || 8787;
