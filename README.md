@@ -19,9 +19,12 @@ resumen generado con IA local.
 ```
 server/         API en Express (agregación RSS, cache en memoria, IA)
   sources.js    Fuentes curadas por tema, con tier de confiabilidad
-  ai.js         Cadena de proveedores de IA (hoy: Ollama local)
-  index.js      Rutas: /api/feeds, /api/topics, /api/brief
+  ai.js         Cadena de proveedores de IA (hoy: Ollama local) + traducción
+  panels/       Paneles del "Radar" (sismos, clima, cripto, vuelos, etc.)
+  index.js      Rutas: /api/feeds, /api/topics, /api/translate, /api/brief, /api/panels
 src/            Frontend React + TypeScript
+  components/RadarView.tsx   Vista del Radar
+  useTranslations.ts         Traducción en segundo plano, por lotes
 ```
 
 ## Arrancar
@@ -39,6 +42,30 @@ El resumen con IA usa [Ollama](https://ollama.com) local — necesitas tenerlo
 corriendo con el modelo configurado en `.env` (por defecto `llama3.2:1b`, rápido
 incluso en CPU; modelos más grandes como `llama3:8b` dan mejor calidad pero
 pueden tardar más de un minuto por respuesta en máquinas sin GPU dedicada).
+
+Los titulares en inglés se traducen automáticamente al español en segundo
+plano (pestaña "Noticias") — por eso se ven en su idioma original un momento
+antes de cambiar a español.
+
+## Panel Radar
+
+Pestaña "Radar" junto a "Noticias". Diez fuentes funcionan sin configurar nada:
+sismos (USGS), clima (Open-Meteo), cripto (CoinGecko), mercados de predicción
+(Polymarket), alertas Tzeva Adom (Israel, no oficial), tráfico aéreo (OpenSky),
+posición de la ISS, desastres globales (GDACS), declaraciones de desastre
+FEMA (EE.UU.), y alertas civiles NINA (Alemania).
+
+Cinco fuentes más están integradas pero necesitan que registres una API key
+gratuita y la pongas en `.env` (ver comentarios en `.env.example` con el link
+de registro de cada una): ACLED (conflictos armados), NASA FIRMS (incendios),
+Cloudflare Radar (cortes de Internet), ThreatFox (indicadores de malware) y
+Alerts.in.ua (alertas aéreas Ucrania). El panel se muestra como "necesita
+configurar X" hasta que la key esté presente — no hace falta tocar código.
+
+No se integraron las fuentes de imágenes satelitales (Copernicus, NASA GIBS,
+USGS M2M, SkyFi) ni tracking orbital avanzado (N2YO, Space-Track): son APIs
+pensadas para mapas/imágenes o requieren auth más compleja, y no encajan en
+el formato de tarjetas de texto de Itaca sin construir un visor dedicado.
 
 ## Agregar fuentes o temas
 
