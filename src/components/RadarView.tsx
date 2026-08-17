@@ -11,7 +11,10 @@ const FORMATTERS: Record<string, (item: any) => Row> = {
     secondary: new Date(i.time).toLocaleString(),
     href: i.url,
   }),
-  weather: (i) => ({ primary: `${i.name} · ${Math.round(i.tempC)}°C`, secondary: i.condition }),
+  weather: (i) => ({
+    primary: `${i.name} · ${Math.round(i.tempC)}°C`,
+    secondary: `${i.localTime ? i.localTime.slice(11, 16) + ' hora local · ' : ''}${i.condition}`,
+  }),
   crypto: (i) => ({
     primary: `${i.symbol} · $${Number(i.price).toLocaleString()}`,
     secondary: `${i.change24h > 0 ? '+' : ''}${i.change24h?.toFixed(2)}% 24h`,

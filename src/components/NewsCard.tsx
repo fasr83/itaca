@@ -26,7 +26,7 @@ export default function NewsCard({
 }) {
   return (
     <a
-      className={`news-card${visited ? ' visited' : ''}`}
+      className={`news-card topic-${item.topic}${visited ? ' visited' : ''}`}
       href={item.link}
       target="_blank"
       rel="noreferrer"

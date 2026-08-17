@@ -8,6 +8,10 @@
   --accent: #5b8cff;
   --tier1: #3ecf8e;
   --tier2: #f5c451;
+  --topic-mundo: #5b8cff;
+  --topic-tecnologia: #b77bff;
+  --topic-negocios: #3ecf8e;
+  --topic-ciencia: #ff8fb1;
 }
 
 * { box-sizing: border-box; }
@@ -68,6 +72,16 @@ header h1 {
   background: var(--accent);
   border-color: var(--accent);
 }
+
+.tabs button.topic-mundo { border-color: color-mix(in srgb, var(--topic-mundo) 40%, var(--border)); }
+.tabs button.topic-tecnologia { border-color: color-mix(in srgb, var(--topic-tecnologia) 40%, var(--border)); }
+.tabs button.topic-negocios { border-color: color-mix(in srgb, var(--topic-negocios) 40%, var(--border)); }
+.tabs button.topic-ciencia { border-color: color-mix(in srgb, var(--topic-ciencia) 40%, var(--border)); }
+
+.tabs button.topic-mundo.active { background: var(--topic-mundo); border-color: var(--topic-mundo); }
+.tabs button.topic-tecnologia.active { background: var(--topic-tecnologia); border-color: var(--topic-tecnologia); }
+.tabs button.topic-negocios.active { background: var(--topic-negocios); border-color: var(--topic-negocios); }
+.tabs button.topic-ciencia.active { background: var(--topic-ciencia); border-color: var(--topic-ciencia); }
 
 .tabs button .count {
   opacity: 0.7;
@@ -162,12 +176,18 @@ header h1 {
   display: block;
   background: var(--panel);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
   border-radius: 10px;
   padding: 14px;
   text-decoration: none;
   color: var(--text);
   transition: border-color 0.15s;
 }
+
+.news-card.topic-mundo { border-left-color: var(--topic-mundo); }
+.news-card.topic-tecnologia { border-left-color: var(--topic-tecnologia); }
+.news-card.topic-negocios { border-left-color: var(--topic-negocios); }
+.news-card.topic-ciencia { border-left-color: var(--topic-ciencia); }
 
 .news-card:hover {
   border-color: var(--accent);
@@ -370,11 +390,34 @@ header h1 {
   overflow: hidden;
 }
 
+.tv-frame-wrap {
+  position: relative;
+}
+
 .tv-frame {
   width: 100%;
   aspect-ratio: 16 / 9;
   border: none;
   display: block;
+}
+
+.tv-maximize {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.tv-maximize:hover {
+  background: rgba(0, 0, 0, 0.85);
 }
 
 .tv-thumb {
@@ -402,4 +445,42 @@ header h1 {
   margin: 0;
   padding: 8px 10px;
   font-size: 13px;
+}
+
+.map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.map-layer-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.map-layer-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.map-container {
+  height: 65vh;
+  min-height: 400px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--panel);
+  color: var(--text);
 }

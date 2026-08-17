@@ -1,19 +1,30 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { CHANNELS, type Channel } from '../channels';
 
 // Click-to-load: no cargamos 12 streams en vivo a la vez (ancho de banda,
 // CPU) — solo el que el usuario realmente quiere ver.
 function ChannelCard({ channel, playing, onPlay }: { channel: Channel; playing: boolean; onPlay: () => void }) {
+  const frameWrapRef = useRef<HTMLDivElement>(null);
+
+  function goFullscreen() {
+    frameWrapRef.current?.requestFullscreen?.();
+  }
+
   return (
     <div className="tv-card">
       {playing ? (
-        <iframe
-          className="tv-frame"
-          src={`https://www.youtube.com/embed/live_stream?channel=${channel.id}&autoplay=1`}
-          title={channel.name}
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-        />
+        <div className="tv-frame-wrap" ref={frameWrapRef}>
+          <iframe
+            className="tv-frame"
+            src={`https://www.youtube.com/embed/live_stream?channel=${channel.id}&autoplay=1`}
+            title={channel.name}
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+          />
+          <button className="tv-maximize" onClick={goFullscreen} title="Maximizar">
+            ⤢
+          </button>
+        </div>
       ) : (
         <button className="tv-thumb" onClick={onPlay}>
           <span className="tv-play">▶</span>

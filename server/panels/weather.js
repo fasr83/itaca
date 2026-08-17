@@ -4,12 +4,17 @@ export const needsKey = null;
 export const ttlMs = 15 * 60 * 1000;
 
 // Sin ubicación del usuario configurada, se muestra un panorama de ciudades
-// variadas. Personalizar: cambiar esta lista o exponerla por .env más adelante.
+// variadas — sirve también como reloj mundial (Open-Meteo ya devuelve la
+// hora local de cada una). Personalizar: cambiar esta lista.
 const CITIES = [
   { name: 'Ciudad de México', lat: 19.4326, lon: -99.1332 },
+  { name: 'Nueva York', lat: 40.7128, lon: -74.006 },
   { name: 'Madrid', lat: 40.4168, lon: -3.7038 },
   { name: 'Buenos Aires', lat: -34.6037, lon: -58.3816 },
-  { name: 'Nueva York', lat: 40.7128, lon: -74.006 },
+  { name: 'Londres', lat: 51.5072, lon: -0.1276 },
+  { name: 'Dubái', lat: 25.2048, lon: 55.2708 },
+  { name: 'Tokio', lat: 35.6762, lon: 139.6503 },
+  { name: 'Sídney', lat: -33.8688, lon: 151.2093 },
 ];
 
 const WEATHER_CODE_LABEL = {
@@ -33,6 +38,9 @@ async function fetchCity(city) {
     tempC: data.current.temperature_2m,
     windKmh: data.current.wind_speed_10m,
     condition: WEATHER_CODE_LABEL[code] || `Código ${code}`,
+    localTime: data.current.time, // ISO local (timezone=auto ya resuelve el huso)
+    lat: city.lat,
+    lon: city.lon,
   };
 }
 

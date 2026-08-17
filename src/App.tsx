@@ -6,6 +6,14 @@ import { useVisited } from './useVisited';
 import { useTranslations } from './useTranslations';
 import RadarView from './components/RadarView';
 import LiveTV from './components/LiveTV';
+import MapView from './components/MapView';
+
+const TOPIC_CLASS: Record<string, string> = {
+  mundo: 'topic-mundo',
+  tecnologia: 'topic-tecnologia',
+  negocios: 'topic-negocios',
+  ciencia: 'topic-ciencia',
+};
 
 function timeAgoShort(date: Date | null): string {
   if (!date) return '';
@@ -16,7 +24,7 @@ function timeAgoShort(date: Date | null): string {
 }
 
 export default function App() {
-  const [view, setView] = useState<'news' | 'radar' | 'tv'>('news');
+  const [view, setView] = useState<'news' | 'radar' | 'tv' | 'map'>('news');
   const [topics, setTopics] = useState<TopicInfo[]>([]);
   const [activeTopic, setActiveTopic] = useState<string>('');
   const [items, setItems] = useState<NewsItem[]>([]);
@@ -99,6 +107,9 @@ export default function App() {
           <button className={view === 'tv' ? 'active' : ''} onClick={() => setView('tv')}>
             TV
           </button>
+          <button className={view === 'map' ? 'active' : ''} onClick={() => setView('map')}>
+            Mapa
+          </button>
         </nav>
 
         {view === 'news' && (
@@ -109,7 +120,7 @@ export default function App() {
             {topics.map((t) => (
               <button
                 key={t.key}
-                className={activeTopic === t.key ? 'active' : ''}
+                className={`${TOPIC_CLASS[t.key] || ''} ${activeTopic === t.key ? 'active' : ''}`}
                 onClick={() => setActiveTopic(t.key)}
               >
                 {t.label} <span className="count">{counts[t.key] || 0}</span>
@@ -131,6 +142,8 @@ export default function App() {
         <RadarView />
       ) : view === 'tv' ? (
         <LiveTV />
+      ) : view === 'map' ? (
+        <MapView />
       ) : (
         <>
           <BriefPanel items={filteredItems} />
