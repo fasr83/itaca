@@ -3,13 +3,14 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { PanelsResponse } from '../types';
 
-type LayerKey = 'earthquakes' | 'gdacs' | 'flights' | 'firms' | 'iss';
+type LayerKey = 'earthquakes' | 'gdacs' | 'flights' | 'firms' | 'iss' | 'maritime';
 
 const LAYERS: { key: LayerKey; label: string; color: string; defaultOn: boolean }[] = [
   { key: 'earthquakes', label: 'Terremotos', color: '#ff6b6b', defaultOn: true },
   { key: 'gdacs', label: 'Desastres (GDACS)', color: '#f5c451', defaultOn: true },
   { key: 'firms', label: 'Incendios (FIRMS)', color: '#ff9142', defaultOn: true },
   { key: 'flights', label: 'Vuelos', color: '#5b8cff', defaultOn: false },
+  { key: 'maritime', label: 'Barcos (AIS)', color: '#4dd0e1', defaultOn: false },
   { key: 'iss', label: 'ISS', color: '#3ecf8e', defaultOn: true },
 ];
 
@@ -100,6 +101,13 @@ export default function MapView() {
         L.circleMarker([f.lat, f.lon], { radius: 2.5, color: '#5b8cff', weight: 0, fillOpacity: 0.8 })
           .bindPopup(`<b>${f.callsign || f.icao24}</b><br>${f.country} · ${Math.round(f.altitude || 0)}m`)
           .addTo(layerGroupsRef.current.flights);
+      }
+
+      const ships = (data.data.maritime?.items || []) as any[];
+      for (const s of ships) {
+        L.circleMarker([s.lat, s.lon], { radius: 3, color: '#4dd0e1', weight: 0, fillOpacity: 0.8 })
+          .bindPopup(`<b>${s.name}</b><br>${(s.speedKn ?? 0).toFixed(1)} nudos · rumbo ${Math.round(s.course || 0)}°`)
+          .addTo(layerGroupsRef.current.maritime);
       }
 
       const iss = (data.data.iss?.items || []) as any[];

@@ -7,6 +7,7 @@ import { useTranslations } from './useTranslations';
 import RadarView from './components/RadarView';
 import LiveTV from './components/LiveTV';
 import MapView from './components/MapView';
+import BreakingTicker from './components/BreakingTicker';
 
 const TOPIC_CLASS: Record<string, string> = {
   mundo: 'topic-mundo',
@@ -92,6 +93,7 @@ export default function App() {
   return (
     <div className="app">
       <div className="topbar">
+        <BreakingTicker items={items} />
         <header>
           <h1>Itaca</h1>
           <p className="subtitle">Tu dashboard personal de noticias, sin ruido</p>

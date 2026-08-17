@@ -1,57 +1,56 @@
 import { useRef, useState } from 'react';
 import { CHANNELS, type Channel } from '../channels';
 
-// Click-to-load: no cargamos 12 streams en vivo a la vez (ancho de banda,
-// CPU) — solo el que el usuario realmente quiere ver.
-function ChannelCard({ channel, playing, onPlay }: { channel: Channel; playing: boolean; onPlay: () => void }) {
-  const frameWrapRef = useRef<HTMLDivElement>(null);
+function NowPlaying({ channel }: { channel: Channel }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
 
   function goFullscreen() {
-    frameWrapRef.current?.requestFullscreen?.();
+    wrapRef.current?.requestFullscreen?.();
   }
 
   return (
-    <div className="tv-card">
-      {playing ? (
-        <div className="tv-frame-wrap" ref={frameWrapRef}>
-          <iframe
-            className="tv-frame"
-            src={`https://www.youtube.com/embed/live_stream?channel=${channel.id}&autoplay=1`}
-            title={channel.name}
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-            allowFullScreen
-          />
-          <button className="tv-maximize" onClick={goFullscreen} title="Maximizar">
-            ⤢
-          </button>
-        </div>
-      ) : (
-        <button className="tv-thumb" onClick={onPlay}>
-          <span className="tv-play">▶</span>
-        </button>
-      )}
-      <p className="tv-name">{channel.name}</p>
+    <div className="tv-hero-wrap" ref={wrapRef}>
+      <iframe
+        key={channel.id}
+        className="tv-hero-frame"
+        src={`https://www.youtube.com/embed/live_stream?channel=${channel.id}&autoplay=1`}
+        title={channel.name}
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowFullScreen
+      />
+      <button className="tv-maximize tv-maximize-hero" onClick={goFullscreen} title="Maximizar">
+        ⤢ Maximizar
+      </button>
+      <p className="tv-hero-name">{channel.name}</p>
     </div>
   );
 }
 
 export default function LiveTV() {
-  const [playing, setPlaying] = useState<string | null>(null);
+  const [playingId, setPlayingId] = useState<string | null>(null);
   const groups = [...new Set(CHANNELS.map((c) => c.group))];
+  const playing = CHANNELS.find((c) => c.id === playingId) || null;
 
   return (
     <div>
+      {playing ? (
+        <NowPlaying channel={playing} />
+      ) : (
+        <div className="tv-hero-empty">Elegí un canal abajo para empezar a ver o escuchar.</div>
+      )}
+
       {groups.map((group) => (
         <section key={group} className="tv-section">
           <h2 className="tv-section-title">{group}</h2>
-          <div className="tv-grid">
+          <div className="tv-select-row">
             {CHANNELS.filter((c) => c.group === group).map((c) => (
-              <ChannelCard
+              <button
                 key={c.id}
-                channel={c}
-                playing={playing === c.id}
-                onPlay={() => setPlaying(c.id)}
-              />
+                className={`tv-select-btn${c.id === playingId ? ' active' : ''}`}
+                onClick={() => setPlayingId(c.id)}
+              >
+                {c.name}
+              </button>
             ))}
           </div>
         </section>

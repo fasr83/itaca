@@ -48,6 +48,13 @@ const FORMATTERS: Record<string, (item: any) => Row> = {
   cloudflare: (i) => ({ primary: i.description, secondary: (i.locations || []).join(', ') }),
   threatfox: (i) => ({ primary: `${i.malware || i.threatType} · ${i.type}`, secondary: i.ioc }),
   ukrainealerts: (i) => ({ primary: i.location, secondary: i.type }),
+  nws: (i) => ({ primary: `${i.event} · ${i.severity}`, secondary: i.area }),
+  forex: (i) => ({ primary: `1 USD = ${Number(i.rate).toFixed(3)} ${i.currency}` }),
+  fred: (i) => ({ primary: `${i.label}: ${i.value}`, secondary: i.date }),
+  maritime: (i) => ({
+    primary: i.name,
+    secondary: `${(i.speedKn ?? 0).toFixed(1)} nudos · rumbo ${Math.round(i.course || 0)}°`,
+  }),
 };
 
 function PanelCard({ status, result }: { status: PanelStatus; result?: import('../types').PanelResult }) {

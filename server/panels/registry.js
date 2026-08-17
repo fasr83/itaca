@@ -18,11 +18,16 @@ import * as cloudflareRadar from './cloudflare.js';
 import * as threatfox from './threatfox.js';
 import * as ukrainealerts from './ukrainealerts.js';
 import * as iss from './iss.js';
+import * as nws from './nws.js';
+import * as forex from './forex.js';
+import * as fred from './fred.js';
+import * as maritime from './maritime.js';
 
 export const PANELS = [
   earthquakes,
   weather,
   crypto,
+  forex,
   predictions,
   redalert,
   flights,
@@ -30,11 +35,14 @@ export const PANELS = [
   gdacs,
   fema,
   nina,
+  nws,
   acled,
   firms,
   cloudflareRadar,
   threatfox,
   ukrainealerts,
+  fred,
+  maritime,
 ];
 
 export function panelStatus(panel) {
