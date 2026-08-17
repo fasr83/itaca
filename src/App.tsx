@@ -8,6 +8,7 @@ import RadarView from './components/RadarView';
 import LiveTV from './components/LiveTV';
 import MapView from './components/MapView';
 import BreakingTicker from './components/BreakingTicker';
+import AlertBanner from './components/AlertBanner';
 
 const TOPIC_CLASS: Record<string, string> = {
   mundo: 'topic-mundo',
@@ -73,8 +74,24 @@ export default function App() {
     [items, activeTopic],
   );
 
-  // Solo se traduce lo que está a la vista — el modelo local es lento, así
-  // que traducir todo de una sería un bloqueo de varios minutos.
+  const breakingItems = useMemo(
+    () =>
+      [...items]
+        .filter((i) => i.tier === 1)
+        .sort((a, b) => new Date(b.isoDate || 0).getTime() - new Date(a.isoDate || 0).getTime())
+        .slice(0, 10),
+    [items],
+  );
+
+  // La cinta de última hora se traduce primero — es lo único siempre visible,
+  // así que no debe quedar en cola detrás de las ~200 traducciones del feed
+  // completo (el modelo local es lento; ese lote de fondo puede tardar
+  // minutos, y la cinta no puede esperar tanto).
+  useEffect(() => {
+    ensureTranslated(breakingItems);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [breakingItems]);
+
   useEffect(() => {
     ensureTranslated(filteredItems);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,10 +107,21 @@ export default function App() {
     [filteredItems, translations],
   );
 
+  const displayBreaking = useMemo(
+    () =>
+      breakingItems.map((item) =>
+        item.lang === 'es' || !translations[item.title]
+          ? item
+          : { ...item, title: translations[item.title] },
+      ),
+    [breakingItems, translations],
+  );
+
   return (
     <div className="app">
       <div className="topbar">
-        <BreakingTicker items={items} />
+        <BreakingTicker items={displayBreaking} />
+        <AlertBanner />
         <header>
           <h1>Itaca</h1>
           <p className="subtitle">Tu dashboard personal de noticias, sin ruido</p>

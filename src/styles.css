@@ -99,6 +99,10 @@ header h1 {
   opacity: 0.85;
 }
 
+.ticker-alert {
+  background: #a15c00;
+}
+
 @keyframes ticker-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
